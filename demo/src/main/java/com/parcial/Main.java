@@ -101,74 +101,73 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
         // Catálogo de criaturas base disponibles usando Polimorfismo
-        Criatura[] listaCriaturas = new Criatura[] {
-            new Dragon("Smaug el Dragón", "Obsidiana"),
-            new Mago("Gandalf el Mago", "Arcano"),
-            new Guerrero("Aragorn el Guerrero", "Acero Valyrio")
-        };
-
-        System.out.println("==================================================");
-        System.out.println("   SIMULADOR DE COMBATE DE CRIATURAS (PARCIAL 2)  ");
-        System.out.println("==================================================");
-
-        boolean ejecutando = true;
-        while (ejecutando) {
-            System.out.println("\nCriaturas disponibles:");
-            for (int i = 0; i < listaCriaturas.length; i++) {
-                System.out.printf("  [%d] %s (Vida inicial: %d HP)%n", (i + 1), listaCriaturas[i].getNombre(), listaCriaturas[i].getSalud());
-            }
-            System.out.println("  [0] Salir del simulador");
-
-            System.out.print("\nSeleccione la Criatura A (1-3) o 0 para salir: ");
-            if (!scanner.hasNextInt()) {
-                System.out.println("\n(Modo predeterminado: simulando Dragón vs Mago)");
-                simularBatalla(instanciarCriatura(1), instanciarCriatura(2));
-                break;
-            }
-
-            int opA = scanner.nextInt();
-            if (opA == 0) {
-                System.out.println("¡Gracias por usar el simulador! Saliendo...");
-                break;
-            }
-            if (opA < 1 || opA > listaCriaturas.length) {
-                System.out.println("Opción no válida. Intente nuevamente.");
-                continue;
-            }
-
-            System.out.print("Seleccione la Criatura B (1-3): ");
-            if (!scanner.hasNextInt()) {
-                break;
-            }
-
-            int opB = scanner.nextInt();
-            if (opB < 1 || opB > listaCriaturas.length) {
-                System.out.println("Opción no válida. Intente nuevamente.");
-                continue;
-            }
-
-            // Crear instancias con vida completa para la simulación
-            Criatura c1 = instanciarCriatura(opA);
-            Criatura c2 = instanciarCriatura(opB);
-
-            // Simular batalla polimórficamente
-            simularBatalla(c1, c2);
-
-            System.out.print("¿Desea simular otra batalla? (1: Sí, 0: No): ");
-            if (scanner.hasNextInt()) {
-                int repetir = scanner.nextInt();
-                if (repetir != 1) {
-                    ejecutando = false;
-                    System.out.println("¡Gracias por usar el simulador! Saliendo...");
+        try (Scanner scanner = new Scanner(System.in)) {
+            // Catálogo de criaturas base disponibles usando Polimorfismo
+            Criatura[] listaCriaturas = new Criatura[] {
+                new Dragon("Smaug el Dragón", "Obsidiana"),
+                new Mago("Gandalf el Mago", "Arcano"),
+                new Guerrero("Aragorn el Guerrero", "Acero Valyrio")
+            };
+            
+            System.out.println("==================================================");
+            System.out.println("   SIMULADOR DE COMBATE DE CRIATURAS (PARCIAL 2)  ");
+            System.out.println("==================================================");
+            
+            boolean ejecutando = true;
+            while (ejecutando) {
+                System.out.println("\nCriaturas disponibles:");
+                for (int i = 0; i < listaCriaturas.length; i++) {
+                    System.out.printf("  [%d] %s (Vida inicial: %d HP)%n", (i + 1), listaCriaturas[i].getNombre(), listaCriaturas[i].getSalud());
                 }
-            } else {
-                ejecutando = false;
+                System.out.println("  [0] Salir del simulador");
+                
+                System.out.print("\nSeleccione la Criatura A (1-3) o 0 para salir: ");
+                if (!scanner.hasNextInt()) {
+                    System.out.println("\n(Modo predeterminado: simulando Dragón vs Mago)");
+                    simularBatalla(instanciarCriatura(1), instanciarCriatura(2));
+                    break;
+                }
+                
+                int opA = scanner.nextInt();
+                if (opA == 0) {
+                    System.out.println("¡Gracias por usar el simulador! Saliendo...");
+                    break;
+                }
+                if (opA < 1 || opA > listaCriaturas.length) {
+                    System.out.println("Opción no válida. Intente nuevamente.");
+                    continue;
+                }
+                
+                System.out.print("Seleccione la Criatura B (1-3): ");
+                if (!scanner.hasNextInt()) {
+                    break;
+                }
+                
+                int opB = scanner.nextInt();
+                if (opB < 1 || opB > listaCriaturas.length) {
+                    System.out.println("Opción no válida. Intente nuevamente.");
+                    continue;
+                }
+                
+                // Crear instancias con vida completa para la simulación
+                Criatura c1 = instanciarCriatura(opA);
+                Criatura c2 = instanciarCriatura(opB);
+                
+                // Simular batalla polimórficamente
+                simularBatalla(c1, c2);
+                
+                System.out.print("¿Desea simular otra batalla? (1: Sí, 0: No): ");
+                if (scanner.hasNextInt()) {
+                    int repetir = scanner.nextInt();
+                    if (repetir != 1) {
+                        ejecutando = false;
+                        System.out.println("¡Gracias por usar el simulador! Saliendo...");
+                    }
+                } else {
+                    ejecutando = false;
+                }
             }
         }
-
-        scanner.close();
     }
 }
