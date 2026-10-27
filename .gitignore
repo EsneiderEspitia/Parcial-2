@@ -1,4 +1,6 @@
 demo/target/maven-status/
+demo/target/surefire-reports/
+demo/target/test-classes/
 .vscode/
 .idea/
 *.iml
