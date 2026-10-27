@@ -3,69 +3,91 @@ package com.parcial;
 import java.util.Random;
 
 /**
- * Clase abstracta que define las características y comportamientos comunes
- * para todas las criaturas del juego de batalla según el diagrama UML.
+ * Clase abstracta que define las características y comportamientos base
+ * para todas las criaturas, según los lineamientos del README.
  */
 public abstract class Criatura {
-    // Atributos protegidos requeridos por el diagrama UML
     protected String nombre;
-    protected int salud;
-    protected int fuerza;
+    protected double hp;
+    protected int salud;  // Sincronizado con hp para compatibilidad con diagramas UML
+    protected int fuerza; // Atributo base para compatibilidad con diagramas UML
 
-    // Arreglos de frases descriptivas para personalizar los ataques y defensas
     protected String[] atqs;
     protected String[] defs;
     protected final Random random = new Random();
 
-    /**
-     * Constructor principal para inicializar los atributos de la criatura.
-     * @param nombre Nombre de la criatura.
-     * @param salud Puntos de vida iniciales.
-     * @param fuerza Fuerza base para el ataque.
-     */
-    public Criatura(String nombre, int salud, int fuerza) {
+    public Criatura(String nombre, double hp, int fuerza) {
         this.nombre = nombre;
-        this.salud = salud;
+        this.hp = hp;
+        this.salud = (int) Math.round(hp);
         this.fuerza = fuerza;
     }
 
-    /**
-     * Constructor sobrecargado con salud y fuerza por defecto según el tipo.
-     */
     public Criatura(String nombre, int salud) {
-        this(nombre, salud, 10);
+        this(nombre, (double) salud, 10);
     }
 
     /**
-     * Método abstracto que permite a una criatura atacar a otra.
-     * @param objetivo Criatura que recibirá el ataque.
+     * Método de ataque según el README:
+     * random i (atqs.length)
+     * random atq (rango según la criatura)
+     * random efectividad (rango según la criatura)
+     * atqTotal = atq * efectividad
+     * print criatura atqs[i], hizo atqTotal puntos de danho
+     * return atqTotal
      */
-    public abstract void atacar(Criatura objetivo);
+    public abstract double atacar();
 
     /**
-     * Método abstracto que permite a una criatura defenderse de un ataque.
-     * @param dano Cantidad de daño recibido del atacante.
+     * Sobrecarga de atacar(Criatura objetivo) para compatibilidad con UML.
      */
-    public abstract void defender(int dano);
-
-    /**
-     * Método concreto que indica si la criatura sigue con vida (salud > 0).
-     * @return true si la salud es mayor a cero, false en caso contrario.
-     */
-    public boolean estaViva() {
-        return this.salud > 0;
+    public void atacar(Criatura objetivo) {
+        objetivo.defender(this);
     }
 
     /**
-     * Alias de estaViva() para máxima compatibilidad.
+     * Método de defensa según el README:
+     * random i (defs.length)
+     * random def (multiplicador según la criatura)
+     * danhoR = criaturax.atacar * def
+     * print criatura defs[i] para defenderse, recibió danhoR puntos de danho
+     * hp = hp - danhoR
+     * print criatura quedó con hp puntos de vida
+     * return hp
+     */
+    public abstract double defender(Criatura criaturax);
+
+    /**
+     * Sobrecarga de defender con daño recibido directo.
+     */
+    public abstract double defender(double danoRecibido);
+
+    /**
+     * Sobrecarga de defender(int) para compatibilidad con diagramas UML.
+     */
+    public void defender(int dano) {
+        defender((double) dano);
+    }
+
+    /**
+     * Validación de vida según el README:
+     * return hp > 0
      */
     public boolean vida() {
-        return estaViva();
+        return this.hp > 0;
     }
 
     /**
-     * Determina el turno inicial lanzando un dado aleatorio de 1 a 6.
-     * @return Número entero entre 1 y 6.
+     * Alias de vida() para compatibilidad con diagramas UML.
+     */
+    public boolean estaViva() {
+        return vida();
+    }
+
+    /**
+     * Asignación aleatoria de turno según el README:
+     * t = random(1 - 6)
+     * return t
      */
     public int turno() {
         return random.nextInt(6) + 1;
@@ -80,12 +102,22 @@ public abstract class Criatura {
         this.nombre = nombre;
     }
 
+    public double getHp() {
+        return hp;
+    }
+
+    public void setHp(double hp) {
+        this.hp = hp;
+        this.salud = (int) Math.round(hp);
+    }
+
     public int getSalud() {
-        return salud;
+        return (int) Math.round(hp);
     }
 
     public void setSalud(int salud) {
         this.salud = salud;
+        this.hp = salud;
     }
 
     public int getFuerza() {
@@ -100,7 +132,15 @@ public abstract class Criatura {
         return atqs;
     }
 
+    public void setAtqs(String[] atqs) {
+        this.atqs = atqs;
+    }
+
     public String[] getDefs() {
         return defs;
+    }
+
+    public void setDefs(String[] defs) {
+        this.defs = defs;
     }
 }

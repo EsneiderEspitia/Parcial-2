@@ -1,18 +1,13 @@
 package com.parcial;
 
 /**
- * Subclase concreta que representa a un Guerrero.
- * Ataca de cerca con su arma y se defiende firmemente con armadura y escudo.
+ * Subclase concreta Guerrero según el README:
+ * Posee 150 puntos de vida; su ataque estará en un rango de 1-20 puntos,
+ * con una efectividad que puede ir de x1.0 a x2.5; y su defensa estará entre x0.4 y x1.1
  */
 public class Guerrero extends Criatura {
-    // Atributo específico requerido por el diagrama UML
     private String arma;
 
-    /**
-     * Constructor del Guerrero.
-     * Vida inicial: 150 HP.
-     * Fuerza base: 15 (ataca con su arma).
-     */
     public Guerrero(String nombre, String arma) {
         super(nombre, 150, 15);
         this.arma = arma;
@@ -40,43 +35,37 @@ public class Guerrero extends Criatura {
         };
     }
 
-    /**
-     * El Guerrero ataca con su arma. Rango de daño base: 1 - 20 con efectividad x1.0 a x2.5.
-     */
     @Override
-    public void atacar(Criatura objetivo) {
+    public double atacar() {
         int i = random.nextInt(atqs.length);
-        // Rango de ataque 1-20
+        // Ataque en rango de 1-20 puntos
         int atq = 1 + random.nextInt(20 - 1 + 1);
-        // Efectividad entre 1.0 y 2.5
+        // Efectividad de x1.0 a x2.5
         double efectividad = 1.0 + (random.nextDouble() * (2.5 - 1.0));
-        int danoTotal = (int) Math.round(atq * efectividad);
+        double atqTotal = atq * efectividad;
 
-        System.out.printf("%s %s, atacando a %s con %d puntos de daño.%n", 
-                this.nombre, this.atqs[i], objetivo.getNombre(), danoTotal);
-
-        // El objetivo recibe el ataque y se defiende
-        objetivo.defender(danoTotal);
+        System.out.printf("%s %s, hizo %.2f puntos de danho.%n", this.nombre, this.atqs[i], atqTotal);
+        return atqTotal;
     }
 
-    /**
-     * El Guerrero se defiende con armadura y escudo. Multiplicador de defensa entre x0.4 y x1.1.
-     */
     @Override
-    public void defender(int danoRecibido) {
+    public double defender(Criatura criaturax) {
+        double atqTotal = criaturax.atacar();
+        return defender(atqTotal);
+    }
+
+    @Override
+    public double defender(double danoRecibido) {
         int i = random.nextInt(defs.length);
-        // Multiplicador de defensa entre 0.4 y 1.1
+        // Multiplicador de defensa entre x0.4 y x1.1
         double def = 0.4 + (random.nextDouble() * (1.1 - 0.4));
-        int danoFinal = (int) Math.round(danoRecibido * def);
+        double danhoR = danoRecibido * def;
 
-        this.salud -= danoFinal;
-        if (this.salud < 0) {
-            this.salud = 0;
-        }
-
-        System.out.printf("%s %s para defenderse, recibió %d puntos de daño.%n", 
-                this.nombre, this.defs[i], danoFinal);
-        System.out.printf("%s quedó con %d puntos de vida.%n", this.nombre, this.salud);
+        System.out.printf("%s %s para defenderse, recibió %.2f puntos de danho.%n", this.nombre, this.defs[i], danhoR);
+        this.hp = Math.max(0, this.hp - danhoR);
+        this.salud = (int) Math.round(this.hp);
+        System.out.printf("%s quedó con %.2f puntos de vida.%n", this.nombre, this.hp);
+        return this.hp;
     }
 
     public String getArma() {

@@ -11,10 +11,10 @@ puntos de danho aleatoria en un rango según su criatura, y en su método de def
 para definir la cantidad de danho que recibe, las reglas son las siguientes:
 
 Dragón: Posee 300 puntos de vida; su ataque estará en un rango de 10-25 puntos, con una efectividad que puede ir 
-de x0.9 a x2.3; y su defensa estará entre x0.7 y x1.9
+de x0.9 a x2.3; y su defensa estará entre x0.7 y x3.9
 
 Mago: Posee 100 puntos de vida; su ataque estará en un rango de 1-15 puntos, con una efectividad que puede ir
-de x1.3 a x4.5; y su defensa estará entre x0.9 y x1.4
+de x1.3 a x5.5; y su defensa estará entre x0.9 y x1.1
 
 Guerrero: Posee 150 puntos de vida; su ataque estará en un rango de 1-20 puntos, con una efectividad que puede ir
 de x1.0 a x2.5; y su defensa estará entre x0.4 y x1.1
