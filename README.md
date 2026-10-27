@@ -40,29 +40,29 @@ asignar los números de manera aleatoria
 "criaturax", está referenciando al rival)
 
 atacar(){
-random atq (rango según la criatura);
-random efectividad (rango según la criatura);
-atqTotal = atq * efectividad;
+random atq (rango según la criatura)
+random efectividad (rango según la criatura)
+atqTotal = atq * efectividad
 print criatura hizo atqTotal puntos de danho
-return atqTotal;
+return atqTotal
 }
 
 defender(){ 
-random def (multiplicador según la criatura);
+random def (multiplicador según la criatura)
 danhoR = criaturax.atacar * def
 print criatura recibió danhoR puntos de danho
-hp = hp - (criatura1.atacar * def);
+hp = hp - (criatura1.atacar * def)
 print criatura quedó con hp puntos de vida
-return hp;
+return hp
 }
 
 vida(){
-return hp > 0;
+return hp > 0
 }
 
 turno(){
-t = random(1 - 6);
-return t;
+t = random(1 - 6)
+return t
 }
 
 # Funcionamiento "lógico" del Main
@@ -70,15 +70,15 @@ return t;
 Main {
   Array donde se guardan las criaturas
   Ciclo que permite la impresión y la selección de las criaturas a simular
-  do {a.turno;
-      b.turno:} while (a.t === b.t)
-  if (a.t > b.t) criatura1 = a:
-                 criatura2 = b;
-  else           criatura1 = a:
-                 criatura2 = b;
+  do {a.turno
+      b.turno} while (a.t === b.t)
+  if (a.t > b.t) criatura1 = a
+                 criatura2 = b
+  else           criatura1 = a
+                 criatura2 = b
   simularBatalla(criatura1, criatura2) {
-    while (criatura1.vida y criatura2.vida){criatura2.defender;
-                                            criatura1.defender;}
+    while (criatura1.vida y criatura2.vida) {criatura2.defender
+                                            criatura1.defender}
   
   }  
 }
