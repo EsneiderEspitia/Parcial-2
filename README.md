@@ -36,8 +36,7 @@ asignar los números de manera aleatoria
       - validar vida criatura 1 >>> hp > 0
    Este ciclo se romperá solo cuando la validación de vida de alguna de las 2 criaturas sea negativa
 
-# Funcionamiento de los métodos de las criaturas (cuando dice "criatura", se está autoreferenciando, si dice
-"criaturax", está referenciando al rival)
+# Funcionamiento de los métodos de las criaturas (cuando dice "criatura", se está autoreferenciando, si dice "criaturax", está referenciando al rival)
 
 ```
 atacar(){
