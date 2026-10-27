@@ -20,9 +20,8 @@ public class Main {
         System.out.println("   INICIANDO SORTEO DE TURNOS: " + criaturaA.getNombre() + " vs " + criaturaB.getNombre());
         System.out.println("==================================================");
 
-        Criatura criatura1 = null;
-        Criatura criatura2 = null;
-        int dado1, dado2;
+        int dado1;
+        int dado2;
 
         // Asignación aleatoria de dados (1 a 6). Repetir en caso de empate.
         do {
@@ -31,16 +30,14 @@ public class Main {
             System.out.println(criaturaA.getNombre() + " sacó en el dado: " + dado1);
             System.out.println(criaturaB.getNombre() + " sacó en el dado: " + dado2);
 
-            if (dado1 > dado2) {
-                criatura1 = criaturaA;
-                criatura2 = criaturaB;
-            } else if (dado2 > dado1) {
-                criatura1 = criaturaB;
-                criatura2 = criaturaA;
-            } else {
+            if (dado1 == dado2) {
                 System.out.println("¡Empate! Volviendo a lanzar los dados...\n");
             }
         } while (dado1 == dado2);
+
+        // Se asigna criatura1 al mayor puntaje para que ataque primero
+        Criatura criatura1 = (dado1 > dado2) ? criaturaA : criaturaB;
+        Criatura criatura2 = (dado1 > dado2) ? criaturaB : criaturaA;
 
         System.out.println("\n>>> " + criatura1.getNombre() + " obtuvo mayor puntaje. ¡Es la Criatura 1 y atacará primero!\n");
 
@@ -88,32 +85,26 @@ public class Main {
      * Fabrica una nueva instancia de Criatura con salud completa para la simulación.
      */
     public static Criatura instanciarCriatura(int opcion) {
-        switch (opcion) {
-            case 1:
-                return new Dragon("Smaug el Dragón", "Obsidiana");
-            case 2:
-                return new Mago("Gandalf el Mago", "Arcano");
-            case 3:
-                return new Guerrero("Aragorn el Guerrero", "Acero Valyrio");
-            default:
-                return null;
-        }
+        return switch (opcion) {
+            case 1 -> new Dragon("Smaug el Dragón", "Obsidiana");
+            case 2 -> new Mago("Gandalf el Mago", "Arcano");
+            default -> new Guerrero("Aragorn el Guerrero", "Acero Valyrio");
+        };
     }
 
     public static void main(String[] args) {
         // Catálogo de criaturas base disponibles usando Polimorfismo
+        Criatura[] listaCriaturas = {
+            new Dragon("Smaug el Dragón", "Obsidiana"),
+            new Mago("Gandalf el Mago", "Arcano"),
+            new Guerrero("Aragorn el Guerrero", "Acero Valyrio")
+        };
+
+        System.out.println("==================================================");
+        System.out.println("   SIMULADOR DE COMBATE DE CRIATURAS (PARCIAL 2)  ");
+        System.out.println("==================================================");
+
         try (Scanner scanner = new Scanner(System.in)) {
-            // Catálogo de criaturas base disponibles usando Polimorfismo
-            Criatura[] listaCriaturas = new Criatura[] {
-                new Dragon("Smaug el Dragón", "Obsidiana"),
-                new Mago("Gandalf el Mago", "Arcano"),
-                new Guerrero("Aragorn el Guerrero", "Acero Valyrio")
-            };
-            
-            System.out.println("==================================================");
-            System.out.println("   SIMULADOR DE COMBATE DE CRIATURAS (PARCIAL 2)  ");
-            System.out.println("==================================================");
-            
             boolean ejecutando = true;
             while (ejecutando) {
                 System.out.println("\nCriaturas disponibles:");
@@ -121,14 +112,14 @@ public class Main {
                     System.out.printf("  [%d] %s (Vida inicial: %d HP)%n", (i + 1), listaCriaturas[i].getNombre(), listaCriaturas[i].getSalud());
                 }
                 System.out.println("  [0] Salir del simulador");
-                
+
                 System.out.print("\nSeleccione la Criatura A (1-3) o 0 para salir: ");
                 if (!scanner.hasNextInt()) {
                     System.out.println("\n(Modo predeterminado: simulando Dragón vs Mago)");
                     simularBatalla(instanciarCriatura(1), instanciarCriatura(2));
                     break;
                 }
-                
+
                 int opA = scanner.nextInt();
                 if (opA == 0) {
                     System.out.println("¡Gracias por usar el simulador! Saliendo...");
@@ -138,25 +129,25 @@ public class Main {
                     System.out.println("Opción no válida. Intente nuevamente.");
                     continue;
                 }
-                
+
                 System.out.print("Seleccione la Criatura B (1-3): ");
                 if (!scanner.hasNextInt()) {
                     break;
                 }
-                
+
                 int opB = scanner.nextInt();
                 if (opB < 1 || opB > listaCriaturas.length) {
                     System.out.println("Opción no válida. Intente nuevamente.");
                     continue;
                 }
-                
+
                 // Crear instancias con vida completa para la simulación
                 Criatura c1 = instanciarCriatura(opA);
                 Criatura c2 = instanciarCriatura(opB);
-                
+
                 // Simular batalla polimórficamente
                 simularBatalla(c1, c2);
-                
+
                 System.out.print("¿Desea simular otra batalla? (1: Sí, 0: No): ");
                 if (scanner.hasNextInt()) {
                     int repetir = scanner.nextInt();

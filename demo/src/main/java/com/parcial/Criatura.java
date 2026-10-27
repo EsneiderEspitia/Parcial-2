@@ -15,7 +15,7 @@ public abstract class Criatura {
     // Arreglos de frases descriptivas para personalizar los ataques y defensas
     protected String[] atqs;
     protected String[] defs;
-    protected Random random = new Random();
+    protected final Random random = new Random();
 
     /**
      * Constructor principal para inicializar los atributos de la criatura.
