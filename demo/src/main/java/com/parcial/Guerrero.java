@@ -1,16 +1,26 @@
 package com.parcial;
 
+/**
+ * Subclase concreta que representa a un Guerrero.
+ * Ataca de cerca con su arma y se defiende firmemente con armadura y escudo.
+ */
 public class Guerrero extends Criatura {
+    // Atributo específico requerido por el diagrama UML
     private String arma;
 
+    /**
+     * Constructor del Guerrero.
+     * Vida inicial: 150 HP.
+     * Fuerza base: 15 (ataca con su arma).
+     */
     public Guerrero(String nombre, String arma) {
-        super(nombre, 150);
+        super(nombre, 150, 15);
         this.arma = arma;
         inicializarFrases();
     }
 
     public Guerrero(String nombre, int salud, int fuerza, String arma) {
-        super(nombre, salud > 0 ? salud : 150, fuerza);
+        super(nombre, salud > 0 ? salud : 150, fuerza > 0 ? fuerza : 15);
         this.arma = arma;
         inicializarFrases();
     }
@@ -30,34 +40,43 @@ public class Guerrero extends Criatura {
         };
     }
 
+    /**
+     * El Guerrero ataca con su arma. Rango de daño base: 1 - 20 con efectividad x1.0 a x2.5.
+     */
     @Override
-    public double atacar() {
+    public void atacar(Criatura objetivo) {
         int i = random.nextInt(atqs.length);
-        // Guerrero: rango de 1-20 puntos
+        // Rango de ataque 1-20
         int atq = 1 + random.nextInt(20 - 1 + 1);
-        // Efectividad: de x1.0 a x2.5 (amplitud = 1.5)
+        // Efectividad entre 1.0 y 2.5
         double efectividad = 1.0 + (random.nextDouble() * (2.5 - 1.0));
-        double atqTotal = atq * efectividad;
+        int danoTotal = (int) Math.round(atq * efectividad);
 
-        System.out.printf("%s %s, hizo %.2f puntos de daño.%n", this.nombre, this.atqs[i], atqTotal);
-        return atqTotal;
+        System.out.printf("%s %s, atacando a %s con %d puntos de daño.%n", 
+                this.nombre, this.atqs[i], objetivo.getNombre(), danoTotal);
+
+        // El objetivo recibe el ataque y se defiende
+        objetivo.defender(danoTotal);
     }
 
+    /**
+     * El Guerrero se defiende con armadura y escudo. Multiplicador de defensa entre x0.4 y x1.1.
+     */
     @Override
-    public double defender(double atqCriaturaRival) {
+    public void defender(int danoRecibido) {
         int i = random.nextInt(defs.length);
-        // Guerrero: defensa entre x0.4 y x1.1 (amplitud = 0.7)
+        // Multiplicador de defensa entre 0.4 y 1.1
         double def = 0.4 + (random.nextDouble() * (1.1 - 0.4));
-        double danhoR = atqCriaturaRival * def;
+        int danoFinal = (int) Math.round(danoRecibido * def);
 
-        this.salud -= danhoR;
+        this.salud -= danoFinal;
         if (this.salud < 0) {
             this.salud = 0;
         }
 
-        System.out.printf("%s %s para defenderse, recibió %.2f puntos de daño.%n", this.nombre, this.defs[i], danhoR);
-        System.out.printf("%s quedó con %.2f puntos de vida.%n", this.nombre, this.salud);
-        return this.salud;
+        System.out.printf("%s %s para defenderse, recibió %d puntos de daño.%n", 
+                this.nombre, this.defs[i], danoFinal);
+        System.out.printf("%s quedó con %d puntos de vida.%n", this.nombre, this.salud);
     }
 
     public String getArma() {

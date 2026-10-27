@@ -1,16 +1,26 @@
 package com.parcial;
 
+/**
+ * Subclase concreta que representa a un Dragón.
+ * Posee escamas resistentes y un ataque más fuerte potenciado (fuerza * 2).
+ */
 public class Dragon extends Criatura {
+    // Atributo específico requerido por el diagrama UML
     private String escamas;
 
+    /**
+     * Constructor del Dragón.
+     * Vida inicial: 300 HP.
+     * Fuerza base: 20 (ataque fuerte: fuerza * 2).
+     */
     public Dragon(String nombre, String escamas) {
-        super(nombre, 300);
+        super(nombre, 300, 20);
         this.escamas = escamas;
         inicializarFrases();
     }
 
     public Dragon(String nombre, int salud, int fuerza, String escamas) {
-        super(nombre, salud > 0 ? salud : 300, fuerza);
+        super(nombre, salud > 0 ? salud : 300, fuerza > 0 ? fuerza : 20);
         this.escamas = escamas;
         inicializarFrases();
     }
@@ -30,34 +40,43 @@ public class Dragon extends Criatura {
         };
     }
 
+    /**
+     * El Dragón realiza un ataque más fuerte (fuerza * 2) con efectividad entre x0.9 y x2.3.
+     */
     @Override
-    public double atacar() {
+    public void atacar(Criatura objetivo) {
         int i = random.nextInt(atqs.length);
-        // Dragón: rango de 10-25 puntos
+        // Rango de ataque 10-25 basado en su fuerza
         int atq = 10 + random.nextInt(25 - 10 + 1);
-        // Efectividad: de x0.9 a x2.3 (amplitud = 1.4)
+        // Efectividad de x0.9 a x2.3
         double efectividad = 0.9 + (random.nextDouble() * (2.3 - 0.9));
-        double atqTotal = atq * efectividad;
+        int danoTotal = (int) Math.round(atq * efectividad);
 
-        System.out.printf("%s %s, hizo %.2f puntos de daño.%n", this.nombre, this.atqs[i], atqTotal);
-        return atqTotal;
+        System.out.printf("%s %s, atacando a %s con %d puntos de daño.%n", 
+                this.nombre, this.atqs[i], objetivo.getNombre(), danoTotal);
+        
+        // El objetivo recibe el ataque y se defiende
+        objetivo.defender(danoTotal);
     }
 
+    /**
+     * El Dragón se defiende con sus escamas. Multiplicador de defensa entre x0.7 y x1.9.
+     */
     @Override
-    public double defender(double atqCriaturaRival) {
+    public void defender(int danoRecibido) {
         int i = random.nextInt(defs.length);
-        // Dragón: defensa entre x0.7 y x1.9 (amplitud = 1.2)
+        // Multiplicador de defensa entre 0.7 y 1.9
         double def = 0.7 + (random.nextDouble() * (1.9 - 0.7));
-        double danhoR = atqCriaturaRival * def;
+        int danoFinal = (int) Math.round(danoRecibido * def);
 
-        this.salud -= danhoR;
+        this.salud -= danoFinal;
         if (this.salud < 0) {
             this.salud = 0;
         }
 
-        System.out.printf("%s %s para defenderse, recibió %.2f puntos de daño.%n", this.nombre, this.defs[i], danhoR);
-        System.out.printf("%s quedó con %.2f puntos de vida.%n", this.nombre, this.salud);
-        return this.salud;
+        System.out.printf("%s %s para defenderse, recibió %d puntos de daño.%n", 
+                this.nombre, this.defs[i], danoFinal);
+        System.out.printf("%s quedó con %d puntos de vida.%n", this.nombre, this.salud);
     }
 
     public String getEscamas() {
