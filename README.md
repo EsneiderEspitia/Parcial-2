@@ -1,5 +1,7 @@
 # Parcial-2
 Solución Parcial 2
+Carlos Esneider ESpitia Paz
+Erick Johan Enriquez Vera
 
 ## Descripción del Proyecto
 El sistema modela una jerarquía de criaturas donde una clase abstracta define las características y comportamientos 
