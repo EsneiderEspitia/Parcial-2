@@ -38,19 +38,23 @@ asignar los números de manera aleatoria
 
 # Funcionamiento de los métodos de las criaturas (cuando dice "criatura", se está autoreferenciando, si dice "criaturax", está referenciando al rival)
 
+Cada criatura obtendrá un array atqs[] y defs[] donde describirá de manera única frases sobre como ataca o defiende cada criatura
+
 ```
 atacar(){
+random i (atqs.length)
 random atq (rango según la criatura)
 random efectividad (rango según la criatura)
 atqTotal = atq * efectividad
-print criatura hizo atqTotal puntos de danho
+print criatura atqs[i], hizo atqTotal puntos de danho
 return atqTotal
 }
 
 defender(){ 
+random i (defs.length)
 random def (multiplicador según la criatura)
 danhoR = criaturax.atacar * def
-print criatura recibió danhoR puntos de danho
+print criatura defs[i] para defenderse, recibió danhoR puntos de danho
 hp = hp - (criatura1.atacar * def)
 print criatura quedó con hp puntos de vida
 return hp
@@ -83,5 +87,44 @@ Main {
                                             criatura1.defender}
   
   }  
+}
+```
+
+# Estructura promedio de cada objeto "criatura" (las "x" representan números, y las "h" strings)
+
+```
+criatura() {
+hp = xxx
+rangoatq = 0.x - x.x
+rangodef = 0.x - 1.x
+atqs[h1, h2, h3, h4]
+defs[h1, h2, h3, h4]
+atacar(){
+random i (atqs.length)
+random atq (rango según la criatura)
+random efectividad (rango según la criatura)
+atqTotal = atq * efectividad
+print criatura atqs[i], hizo atqTotal puntos de danho
+return atqTotal
+}
+
+defender(){ 
+random i (defs.length)
+random def (multiplicador según la criatura)
+danhoR = criaturax.atacar * def
+print criatura defs[i] para defenderse, recibió danhoR puntos de danho
+hp = hp - (criatura1.atacar * def)
+print criatura quedó con hp puntos de vida
+return hp
+}
+
+vida(){
+return hp > 0
+}
+
+turno(){
+t = random(1 - 6)
+return t
+}
 }
 ```
