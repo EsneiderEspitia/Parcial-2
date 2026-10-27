@@ -1,32 +1,66 @@
 package com.parcial;
 
-// Clase abstracta que define las características comunes.
+import java.util.Random;
+
 public abstract class Criatura {
-
     protected String nombre;
-    protected int salud;
-    protected int fuerza;
+    protected double salud; // hp
+    protected int fuerza;   // atq base
+    protected String[] atqs;
+    protected String[] defs;
+    protected Random random = new Random();
 
-    // Constructor para inicializar una criatura.
-    public Criatura(String nombre, int salud, int fuerza) {
+    public Criatura(String nombre, double salud) {
+        this.nombre = nombre;
+        this.salud = salud;
+        this.fuerza = 0;
+    }
+
+    public Criatura(String nombre, double salud, int fuerza) {
         this.nombre = nombre;
         this.salud = salud;
         this.fuerza = fuerza;
     }
 
-    // Cada criatura define su propio ataque.
-    public abstract void atacar(Criatura objetivo);
+    // Métodos abstractos según la guía del parcial
+    public abstract double atacar();
+    public abstract double defender(double atqCriaturaRival);
 
-    // Cada criatura define cómo se defiende.
-    public abstract void defender(int dano);
-
-    // Comprueba si la criatura sigue viva.
-    public boolean estaViva() {
-        return salud > 0;
+    // Método concreto vida(): return hp > 0
+    public boolean vida() {
+        return this.salud > 0;
     }
-}
 
-public void atacar(Criatura objetivo) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'atacar'");
+    // Método turno(): dado de 1 a 6
+    public int turno() {
+        return random.nextInt(6) + 1;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getSalud() {
+        return salud;
+    }
+
+    public void setSalud(double salud) {
+        this.salud = salud;
+    }
+
+    public int getFuerza() {
+        return fuerza;
+    }
+
+    public void setFuerza(int fuerza) {
+        this.fuerza = fuerza;
+    }
+
+    public String[] getAtqs() {
+        return atqs;
+    }
+
+    public String[] getDefs() {
+        return defs;
+    }
 }
