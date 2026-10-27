@@ -39,6 +39,7 @@ asignar los números de manera aleatoria
 # Funcionamiento de los métodos de las criaturas (cuando dice "criatura", se está autoreferenciando, si dice
 "criaturax", está referenciando al rival)
 
+```
 atacar(){
 random atq (rango según la criatura)
 random efectividad (rango según la criatura)
@@ -64,9 +65,11 @@ turno(){
 t = random(1 - 6)
 return t
 }
+```
 
 # Funcionamiento "lógico" del Main
 
+```
 Main {
   Array donde se guardan las criaturas
   Ciclo que permite la impresión y la selección de las criaturas a simular
@@ -82,3 +85,4 @@ Main {
   
   }  
 }
+```
